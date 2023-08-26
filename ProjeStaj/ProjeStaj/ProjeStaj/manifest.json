@@ -1,0 +1,44 @@
+{
+  "theme_color": "#f6f435",
+  "background_color": "#f6e735",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "id": "/",
+  "name": "BOTAS",
+  "short_name": "BOTAS",
+  "description": "BOTAS webapp",
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "http://localhost:55753/manifest.json"
+
+    }
+
+  ],
+
+  "prefer_related_applications": true,
+
+  "icons": [
+    {
+      "src": "/pwa/img/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa/img/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa/img/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa/img/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

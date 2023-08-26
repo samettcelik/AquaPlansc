@@ -1,0 +1,163 @@
+﻿@{
+    ViewBag.Title = "Kayıt Ol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+
+    <title>BOTAŞ</title>
+    <style>
+        body {
+            background-color: rgb(233, 217, 132);
+        }
+
+
+        img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+        label {
+            font-size: 24px;
+            font-weight: bold;
+            display: inline-block;
+            width: 120px; /* Adjust the width as needed for proper alignment */
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        input[type="submit"] {
+            font-size: 20px;
+            background-color: rgb(255, 106, 0);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .spacer {
+            margin-bottom: 20px;
+        }
+        /*Hesabınız yok mu , giris yap style*/
+        .giris-secim {
+            margin-top: 20px;
+        }
+
+            .giris-secim a {
+                font-size: 18px;
+                text-decoration: none;
+                color: red;
+            }
+
+                .giris-secim a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+
+    <link rel="manifest" href="~/manifest.json" />
+
+
+
+    <!-- Bu kodu HTML dosyalarınızın <head> bölümüne ekleyelim. -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js').then(function (registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }, function (err) {
+                    console.log('Service Worker registration failed:', err);
+                });
+            });
+        }
+    </script>
+
+
+</head>
+<body>
+    <div style="text-align: center; margin-bottom: 100px;">
+        <h1>KAYIT OL</h1> <!-- Büyük başlık -->
+        <img src="~/Images/kayitol.png" alt="BOTAŞ Logo" /> <!-- Kayıt Ol Logosu -->
+        <!-- Giriş Yap Kısmı -->
+        <form method="post">
+            <div style="margin-top:20px;">
+                <div class="spacer">
+
+                    <!-- Kullanıcı Adı Giriş -->
+                    <div>
+                        <label for="username">Ad:</label>
+                        <input type="text" name="username" required />
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div style="margin-top:20px;">
+                <div class="spacer">
+
+                    <!-- E-mail Giriş -->
+                    <div>
+                        <label for="email">E-mail:</label>
+                        <input type="email" name="email" required autocomplete="username">
+                    </div>
+
+                </div>
+            </div>
+
+            <div style="margin-top: 5px;">
+
+                <!-- Şifre Giriş -->
+                <div>
+                    <label for="şifre">Şifre:</label>
+                    <input type="password" name="şifre" required autocomplete="current-password">
+                </div>
+
+            </div>
+
+            <div style="margin-top: 20px;">
+
+                <!-- Kayıt Ol Butonu -->
+                <div style="margin-top: 5px;">
+                    <input type="submit" value="Kayıt Ol" />
+                </div>
+
+            </div>
+        </form>
+
+        @if (IsPost)
+        {
+            string email = Request.Form["email"];
+            string sifre = Request.Form["şifre"];
+
+            // Kayıt ol butonuna tıklandığında kimlik bilgilerini cache'e kaydet
+            KimlikCache.CacheKimlik(email, sifre);
+
+            // Kayıt işlemi tamamlandıktan sonra giriş sayfasına yönlendirme yap.
+            // Giriş yap sayfasına yönlendirme
+            Response.Redirect("/Home/Index");
+        }
+
+
+
+
+
+        <!--Hesabınız var mı ? Giriş Yap-->
+        <div class="giris-secim">
+            <span>Hesabınız var mı?</span>
+            <a href="http://localhost:55753/">Giriş Yap</a>
+
+        </div>
+    </div>
+
+
+</body>
+</html>

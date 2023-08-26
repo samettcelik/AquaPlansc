@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - ASP.NET Uygulamam</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="prototurk.com">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="/pwa/img/icon-192x192.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="/pwa/img/icon-192x192.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="/pwa/img/icon-192x192.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+    <link href="/pwa/img/icon-192x192.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+    <link href="/pwa/img/icon-192x192.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="/pwa/img/icon-192x192.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="/pwa/img/icon-192x192.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link rel="apple-touch-icon" sizes="128x128" href="/pwa/img/icon-192x192.png">
+    <link rel="apple-touch-icon-precomposed" sizes="128x128" href="/pwa/img/icon-192x192.png">
+    <link rel="icon" sizes="192x192" href="/pwa/img/icon-192x192.png">
+    <link rel="icon" sizes="128x128" href="/pwa/img/icon-192x192.png">
+
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container">
+            @Html.ActionLink("BOTAŞ", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Gezintiyi aç/kapat" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li>@Html.ActionLink("Giriş Yap", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Kayıt Ol", "KayitOl", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Hakkında", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("İletişim", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - ASP.NET Uygulamam</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var req = function () {
+
+            if ("serviceWorker" in navigator) {
+                // Register a service worker hosted at the root of the
+                // site using the default scope.
+                navigator.serviceWorker.register("/sw.js").then(
+                    (registration) => {
+                        console.log("Service worker registration succeeded:", registration);
+                    },
+                    (error) => {
+                        console.error(`Service worker registration failed: ${error}`);
+                    },
+                );
+            } else {
+                console.error("Service workers are not supported.");
+            }
+        }
+
+        req();
+
+    });
+</script>

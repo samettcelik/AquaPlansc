@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ÜRÜN EKLE</title>
+
+    <style>
+        /* Sayfa arka plan rengi */
+        body {
+            background-color: rgb(233, 217, 132);
+        }
+
+        /* Ürün resimlerinin maksimum boyutları */
+        img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+        /* Label stilini düzenleme */
+        label {
+            font-size: 24px;
+            font-weight: bold;
+            display: inline-block;
+            width: 220px; /* Gerektiğinde hizalamayı düzeltmek için genişliği ayarlayın */
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        /* Form stilini düzenleme */
+        form {
+            text-align: center;
+        }
+
+        /* Gönder butonunun stilini düzenleme */
+        input[type="submit"] {
+            font-size: 20px;
+            background-color: rgb(0, 128, 255);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Satırlar arasında boşluk bırakma */
+        .spacer {
+            margin-bottom: 20px;
+        }
+
+        /* Tablo stilini düzenleme */
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Tablo başlığının arka plan ve metin rengini düzenleme */
+        th {
+            background-color: rgb(0, 128, 255);
+            color: white;
+        }
+
+        /* Sil simgesi için cursor değiştirme */
+        .delete-icon {
+            cursor: pointer;
+        }
+
+        /* Kaydedilmiş tablo satırlarındaki inputların stilini düzenleme */
+        .saved td input {
+            background-color: #ccc;
+            pointer-events: none;
+        }
+
+        /* Yeni eklenen satırın başlangıçta görünmemesini sağlama */
+        .template-row {
+            display: none;
+        }
+
+        /* Renkli satırlar */
+        .color-row-dark-blue {
+            background-color: darkblue;
+            color: white;
+        }
+
+        .color-row-navy {
+            background-color: #6A5ACD; /* Eflatun */
+            color: white;
+        }
+
+        .color-row-light-blue {
+            background-color: #ADD8E6; /* Açık Mavi */
+            color: black;
+        }
+    </style>
+
+    <!-- Tarayıcı servis işçisi (service worker) desteği kontrolü ve kayıt -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js').then(function (registration) {
+                    console.log('Servis İşçisi kapsamıyla kaydedildi:', registration.scope);
+                }, function (err) {
+                    console.log('Servis İşçisi kaydı başarısız oldu:', err);
+                });
+            });
+        }
+    </script>
+
+    <link rel="manifest" href="~/manifest.json" />
+</head>
+<body>
+    <div style="text-align: center; margin-bottom: 100px;">
+        <h1>ÜRÜN EKLE</h1> <!-- Büyük başlık -->
+        <!-- Ürün Ekle Kısmı -->
+        <form method="post">
+            <!-- Ürün detaylarını girmek için tablo -->
+            <table id="productTable">
+                <tr>
+                    <th>Ürün Kodu</th>
+                    <th>Ürün Adı</th>
+                    <th>Ürün Sayısı</th>
+                    <th>Sil</th>
+                </tr>
+                <!-- Örnek satır (bunu kaldırabilirsiniz) -->
+                <tr class="template-row">
+                    <td><input type="text" name="productCode[]" required /></td>
+                    <td><input type="text" name="productName[]" required /></td>
+                    <td><input type="number" name="productQuantity[]" required /></td>
+                    <td class="delete-icon" onclick="deleteRow(this)">X</td>
+                </tr>
+            </table>
+
+            <!-- Ürün Ekle Butonu -->
+            <div style="margin-top: 20px;">
+                <input type="button" value="Ürün Ekle" onclick="addRow()" />
+            </div>
+        </form>
+
+        <!-- Başarı ve hata mesajlarının gösterilmesi -->
+        @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+        {
+            <p style="color: green; margin-top: 10px;">@ViewBag.SuccessMessage</p>
+        }
+
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <p style="color:red; margin-top: 10px;">@ViewBag.ErrorMessage</p>
+        }
+    </div>
+
+    <script>
+        // Sil simgesine tıklandığında satırı silmek için fonksiyon
+        function deleteRow(element) {
+            var row = element.parentNode;
+            while (row && row.tagName !== "TR") {
+                row = row.parentNode;
+            }
+            if (row) {
+                row.parentNode.removeChild(row);
+            }
+        }
+
+        // Yeni satır eklemek için fonksiyon
+        function addRow() {
+            var table = document.getElementById("productTable");
+            var rowCount = table.rows.length;
+
+            var newRow = table.insertRow(rowCount - 1);
+            newRow.className = "color-row-" + (rowCount % 3 === 1 ? "dark-blue" : rowCount % 3 === 2 ? "navy" : "light-blue");
+            var templateRow = document.querySelector(".template-row");
+            newRow.innerHTML = templateRow.innerHTML;
+            newRow.style.display = "table-row";
+
+            var inputs = newRow.getElementsByTagName("input");
+            for (var i = 0; i < inputs.length; i++) {
+                // Yeni eklenen satırları beyaz yap ve düzenlenebilir hale getir
+                inputs[i].style.backgroundColor = "white";
+                inputs[i].readOnly = false;
+            }
+        }
+    </script>
+
+
+</body>
+</html>
